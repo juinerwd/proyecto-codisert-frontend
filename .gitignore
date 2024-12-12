@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 pnpm-lock.yaml
+temporal.txt
 
 # Editor directories and files
 .vscode/*

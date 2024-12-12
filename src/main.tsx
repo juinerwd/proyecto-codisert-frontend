@@ -2,7 +2,8 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { ThemeProvider } from '@material-tailwind/react'
+
+import { ThemeProvider } from "./components/theme-provider"
 
 import "./styles/tailwind.css";
 
@@ -14,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <App />
         </ThemeProvider>
       </BrowserRouter>

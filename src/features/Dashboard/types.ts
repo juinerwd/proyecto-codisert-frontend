@@ -4,3 +4,8 @@ export interface User {
     email: string;
     // Añade las propiedades que necesites
 }
+
+export interface LoginData {
+    email: string;
+    password: string;
+}
