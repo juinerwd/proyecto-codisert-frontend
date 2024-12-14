@@ -34,7 +34,7 @@ const data = {
   },
   navLinks: [
     {
-      title: "Dashboard (Inicio)",
+      title: "Dashboard",
       isActive: true,
       url: "/dashboard",
       icon: HomeIcon,
@@ -89,9 +89,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {data.navLinks.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    {item.url ? <Link to={item.url} className="font-bold">
+                    {item.url ? <Link to={item.url} className="font-medium">
                       {item.title}
-                    </Link>: <span className="font-bold">{item.title}</span>}
+                    </Link>: <span className="font-medium">{item.title}</span>}
                   </SidebarMenuButton>
                   {item.items?.length ? (
                     <SidebarMenuSub>

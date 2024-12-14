@@ -1,8 +1,8 @@
 import React from 'react'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { adminSchema, AdminSchema } from '../schemas/registerUser';
 
-import { useForm } from 'react-hook-form'
-
-import { Button } from "../../../components/ui/button"
 import {
     Dialog,
     DialogContent,
@@ -11,27 +11,34 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "../../../components/ui/dialog"
+import Tooltip from './TooltipComponent';
 import { Input } from "../../../components/ui/input"
+import { Button } from "../../../components/ui/button"
+import {
+    Form,
+    FormItem,
+    FormLabel,
+    FormField,
+    FormMessage,
+    FormControl
+} from '../../../components/ui/form'
 import {
     Select,
-    SelectContent,
-    SelectGroup,
     SelectItem,
     SelectLabel,
-    SelectTrigger,
     SelectValue,
-} from "../../../components/ui/select"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../components/ui/form'
-import { adminSchema, AdminSchema } from '../schemas/registerUser'
-import { zodResolver } from '@hookform/resolvers/zod'
+    SelectGroup,
+    SelectTrigger,
+    SelectContent
+} from '../../../components/ui/select'
 
 interface Props {
-    text: string
-    // icon: React.ReactNode
+    // text: string
+    icon?: React.ReactNode
     // children?: React.ReactNode
 }
 
-const RegisterAdmin = ({ text }: Props) => {
+const UpdateAdmin = ({ icon }: Props) => {
     const form = useForm<AdminSchema>({
         resolver: zodResolver(adminSchema),
         defaultValues: {
@@ -52,13 +59,15 @@ const RegisterAdmin = ({ text }: Props) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">{text}</Button>
+                <Button variant="outline" className='p-0 size-7 w-7 h-7'>
+                    <Tooltip text="Editar Beneficiario" icon={icon} />
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[720px] h-[90vh]">
                 <DialogHeader>
-                    <DialogTitle>Registrar nuevo administrador</DialogTitle>
+                    <DialogTitle>Actualizar Administrador</DialogTitle>
                     <DialogDescription>
-                        Intruduce los datos del nuevo administrador
+                        Intruduce los datos a cambiar del administrador
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -99,7 +108,7 @@ const RegisterAdmin = ({ text }: Props) => {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
+                            /> 
                         </div>
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                             <FormField
@@ -226,4 +235,4 @@ const RegisterAdmin = ({ text }: Props) => {
     )
 }
 
-export default RegisterAdmin
+export default UpdateAdmin

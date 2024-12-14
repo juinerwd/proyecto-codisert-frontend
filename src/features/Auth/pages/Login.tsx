@@ -1,12 +1,12 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import AuthLayout from '../layouts/AuthLayout'
-import { useForm } from '../../../hooks/useForm'
-import { startLoginWithEmailAndPassword } from '../../../store/thunks';
+// import { startLoginWithEmailAndPassword } from '../../../store/thunks';
 
 import { Input } from "../../../components/ui/input"
-import { Label } from "../../../components/ui/label"
 import { Button } from "../../../components/ui/button"
 import {
     Card,
@@ -15,61 +15,80 @@ import {
     CardHeader,
     CardTitle,
 } from "../../../components/ui/card"
-import { loginSchema } from '../schemas/loginSchema';
+import { LoginSchema, loginSchema } from '../schemas/loginSchema';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../components/ui/form';
 
 const Login = () => {
-    const dispatch = useDispatch();
-    const { email, password, errors, onInputChange, handleSubmit } = useForm(loginSchema, {
-        email: "",
-        password: "",
+    // const dispatch = useDispatch();
+
+    const form = useForm<LoginSchema>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        }
     });
 
-    const onSubmit = (data: { email: string, password: string }) => {
+    const onSubmit = (data: LoginSchema) => {
         console.log("Formulario enviado", data)
-        
-        dispatch(startLoginWithEmailAndPassword(data))
+
+        // dispatch(startLoginWithEmailAndPassword(data))
     }
 
     return (
         <AuthLayout>
-            <Card className="w-[450px] shadow-lg shadow-blue-gray-500 dark:shadow-gray-900">
+            <Card className="w-[450px] shadow-lg shadow-blue-gray-500 dark:shadow-gray-900 dark:bg-gray-100 rounded-2xl">
                 <CardHeader className='flex justify-center items-center pb-10'>
-                    <CardTitle className='text-3xl font-bold'>Iniciar Sesión</CardTitle>
+                    <CardTitle className='text-gray-900 text-3xl font-bold'>Iniciar Sesión</CardTitle>
                 </CardHeader>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <CardContent>
-                        <div className="grid w-full items-center gap-4">
-                            <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="email">Correo electrónico</Label>
-                                <Input
-                                    id="email"
-                                    placeholder="example@example.com"
-                                    type="email"
-                                    name="email"
-                                    value={email}
-                                    onChange={onInputChange}
-                                />
-                                {errors.email && <Label className="text-red-500">{errors.email}</Label>}
-                            </div>
-                            <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="password">Contraseña</Label>
-                                <Input
-                                    id="password"
-                                    placeholder="******"
-                                    type="password"
-                                    name="password"
-                                    value={password}
-                                    onChange={onInputChange}
-                                />
-                                {errors.password && <Label className="text-red-500">{errors.password}</Label>}
-                            </div>
-                        </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-end">
-                        {/* <Button variant="outline">Cancel</Button> */}
-                        <Button type='submit' className='w-32'>Ingresar</Button>
-                    </CardFooter>
-                </form>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <CardContent className='space-y-5'>
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className='text-gray-900'>Correo electrónico</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="email"
+                                                className='text-gray-900'
+                                                placeholder="example@example.com"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className='text-gray-900'>Contraseña</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="password"
+                                                className='text-gray-900'
+                                                placeholder="******"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </CardContent>
+                        <CardFooter className="flex justify-end">
+                            {/* <Button variant="outline">Cancel</Button> */}
+                            <Button type='submit' className='w-32 bg-gray-900 text-gray-100 hover:bg-gray-900'>
+                                <Link to="/dashboard">Ingresar</Link>
+                            </Button>
+                        </CardFooter>
+                    </form>
+                </Form>
             </Card>
         </AuthLayout>
     )

@@ -1,49 +1,58 @@
-import React from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from "date-fns"
+
+import { cn } from '../../../lib/utils';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../../../components/ui/card"
-import { useForm } from '../../../hooks/useForm'
-import { RegisterUserSchema, registerUserSchema } from '../schemas/registerUser';
+// import { useForm } from '../../../hooks/useForm'
+
+import { BeneficiarioSchema, beneficiarioSchema } from '../schemas/registerUser';
 import { Button } from "../../../components/ui/button"
-import InputComponent from '../../../components/InputComponent'
-import { Label } from "../../../components/ui/label"
 import { Textarea } from "../../../components/ui/textarea"
-import { FileInput } from 'lucide-react';
+import { Input } from "../../../components/ui/input"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../components/ui/form'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../../../components/ui/select'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "../../../components/ui/popover"
+import { Calendar } from "../../../components/ui/calendar"
+import { CalendarIcon } from 'lucide-react';
 
 const CreateUser = () => {
 
-    const { formState, errors, onInputChange, handleSubmit } = useForm(registerUserSchema, {
-        name: "",
-        lastname: "",
-        identification_type: "",
-        identification_number: "",
-        telephone: "",
-        celular: "",
-        email: "",
-        stratum: "",
-        start_operation: new Date(),
-        department_code: "",
-        department: "",
-        municipality_code: "",
-        municipality: "",
-        address: "",
-        contrato: undefined,
-        copia_cc: undefined,
-        copia_ds: undefined,
-        foto_fp: undefined,
-        velocidad_internet: undefined,
-        cpe: undefined,
+    const form = useForm<BeneficiarioSchema>({
+        resolver: zodResolver(beneficiarioSchema),
+        defaultValues: {
+            name: "",
+            lastname: "",
+            identification_type: "",
+            identification_number: "",
+            telephone: "",
+            celular: "",
+            email: "",
+            stratum: "",
+            start_operation: new Date(),
+            department_code: "",
+            department: "",
+            municipality_code: "",
+            municipality: "",
+            address: "",
+            contrato: undefined,
+            copia_cc: undefined,
+            copia_ds: undefined,
+            foto_fp: undefined,
+            velocidad_internet: undefined,
+            cpe: undefined,
+            info_adicional: "",
+        }
     });
 
-    const onSubmit = (data: RegisterUserSchema) => {
+    const onSubmit = (data: BeneficiarioSchema) => {
         console.log("Formulario enviado", data)
-    }
-
-    const validateErrors = (errors) => {
-        if (errors !== undefined && errors !== null) {
-            return errors;
-        }
-        return "";
     }
 
     return (
@@ -54,275 +63,502 @@ const CreateUser = () => {
                     <CardDescription>Intruduce los datos del nuevo usuario</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                            <InputComponent
-                                id="name"
-                                name="name"
-                                type="text"
-                                label="Nombre"
-                                value={formState.name}
-                                placeholder="Joe"
-                                onChange={onInputChange}
-                                errors={`${validateErrors(errors.name)}`}
-                            />
-                            <InputComponent
-                                id="lastname"
-                                name="lastname"
-                                type="text"
-                                label="Apellidos"
-                                value={formState.lastname}
-                                placeholder="Doe"
-                                onChange={onInputChange}
-                                errors={`${validateErrors(errors.lastname)}`}
-                            />
-                        </div>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                            <div className="mt-2">
-                                <Label htmlFor="identification_type">Tipo de identificación</Label>
-                                <select
-                                    id="identification_type"
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Nombre</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="text"
+                                                    placeholder="Joe"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="lastname"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Apellidos</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="text"
+                                                    placeholder="Doe"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                <FormField
+                                    control={form.control}
                                     name="identification_type"
-                                    onChange={onInputChange}
-                                    className="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[#030711] dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-gray-800">
-                                    <option selected>Selecciona una opción</option>
-                                    <option value="US">Cédula de Ciudadanía</option>
-                                    <option value="CA">Tarje de Indentidad</option>
-                                    <option value="FR">Cédula de Extranjería</option>
-                                    <option value="DE">Pasaporte</option>
-                                </select>
-                                {errors.identification_type && <Label className="text-red-500">{errors.identification_type}</Label>}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Tipo de identificación</FormLabel>
+                                            <FormControl>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Selecciona una opción" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectLabel>Selecciona una opción</SelectLabel>
+                                                            <SelectItem value="CC">Cédula de Ciudadanía</SelectItem>
+                                                            <SelectItem value="TI">Tarje de Indentidad</SelectItem>
+                                                            <SelectItem value="CE">Cédula de Extranjería</SelectItem>
+                                                            <SelectItem value="PA">Pasaporte</SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="identification_number"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Número de identificación</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="text"
+                                                    placeholder=""
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
-                            <InputComponent
-                                id="identification_number"
-                                name="identification_number"
-                                type="text"
-                                label="Número de identificación"
-                                value={formState.identification_number}
-                                placeholder=""
-                                onChange={onInputChange}
-                                errors={`${validateErrors(errors.identification_number)}`}
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                <FormField
+                                    control={form.control}
+                                    name="telephone"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Teléfono</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="tel"
+                                                    placeholder="Número de teléfono"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="celular"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Celular</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="tel"
+                                                    placeholder="Número de celular"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Correo electrónico</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="email"
+                                                placeholder="example@example.com"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
                             />
-                        </div>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                            <InputComponent
-                                id="telephone"
-                                name="telephone"
-                                type="text"
-                                label="Teléfono"
-                                value={formState.telephone}
-                                placeholder="Número de teléfono"
-                                onChange={onInputChange}
-                                errors={`${validateErrors(errors.telephone)}`}
-                            />
-                            <InputComponent
-                                id="celular"
-                                name="celular"
-                                type="text"
-                                label="Celular"
-                                value={formState.celular}
-                                placeholder="Número de celular"
-                                onChange={onInputChange}
-                                errors={`${validateErrors(errors.celular)}`}
-                            />
-                        </div>
-                        <InputComponent
-                            id="email"
-                            name="email"
-                            type="email"
-                            label="Correo electrónico"
-                            value={formState.email}
-                            placeholder="example@example.com"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.email)}`}
-                        />
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                            <InputComponent
-                                id="stratum"
-                                name="stratum"
-                                type="text"
-                                label="Estrato"
-                                placeholder=""
-                                value={formState.stratum}
-                                onChange={onInputChange}
-                                errors={`${validateErrors(errors.stratum)}`}
-                            />
-                            <InputComponent
-                                id="start_operation"
-                                name="start_operation"
-                                type="date"
-                                label="Fecha de inicio de operación"
-                                placeholder=""
-                                onChange={onInputChange}
-                                errors={`${validateErrors(errors.start_operation)}`}
-                            />
-                        </div>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                            <div className="mt-2">
-                                <Label htmlFor="department_code">Código DANE Departamento</Label>
-                                <select
-                                    id="department_code"
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                <FormField
+                                    control={form.control}
+                                    name="stratum"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Estrato</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="number"
+                                                    placeholder=""
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="start_operation"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Fecha de inicio de operación</FormLabel>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant={"outline"}
+                                                            className={cn(
+                                                                "w-full pl-3 text-left font-normal",
+                                                                !field.value && "text-muted-foreground"
+                                                            )}
+                                                        >
+                                                            {field.value ? (
+                                                                format(field.value, "dd/MM/yyyy")
+                                                            ) : (
+                                                                <span>Pick a date</span>
+                                                            )}
+                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <Calendar
+                                                        mode="single"
+                                                        selected={field.value}
+                                                        onSelect={field.onChange}
+                                                        disabled={(date) =>
+                                                            date > new Date() || date < new Date("1900-01-01")
+                                                        }
+                                                        initialFocus
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                <FormField
+                                    control={form.control}
                                     name="department_code"
-                                    onChange={onInputChange}
-                                    className="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[#030711] dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-gray-800">
-                                    <option selected>Selecciona una opción</option>
-                                    <option value="05">05</option>
-                                    <option value="08">08</option>
-                                    <option value="11">11</option>
-                                    <option value="13">13</option>
-                                    <option value="15">15</option>
-                                    <option value="17">17</option>
-                                    <option value="18">18</option>
-                                    <option value="19">19</option>
-                                    <option value="20">20</option>
-                                    <option value="23">23</option>
-                                    <option value="25">25</option>
-                                    <option value="27">27</option>
-                                    <option value="41">41</option>
-                                    <option value="44">44</option>
-                                    <option value="47">47</option>
-                                    <option value="50">50</option>
-                                    <option value="52">52</option>
-                                    <option value="54">54</option>
-                                    <option value="63">63</option>
-                                    <option value="66">66</option>
-                                    <option value="68">68</option>
-                                    <option value="70">70</option>
-                                    <option value="73">73</option>
-                                    <option value="76">76</option>
-                                    <option value="81">81</option>
-                                    <option value="85">85</option>
-                                    <option value="86">86</option>
-                                    <option value="88">88</option>
-                                    <option value="91">91</option>
-                                    <option value="94">94</option>
-                                    <option value="95">95</option>
-                                    <option value="97">97</option>
-                                </select>
-                                {errors.department_code && <Label className="text-red-500">{errors.department_code}</Label>}
-                            </div>
-                            <div className="mt-2">
-                                <Label htmlFor="department">Departamento</Label>
-                                <select
-                                    id="department"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Código DANE Departamento</FormLabel>
+                                            <FormControl>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Selecciona una opción" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectLabel>Opciones</SelectLabel>
+                                                            <SelectItem value="05">05</SelectItem>
+                                                            <SelectItem value="08">08</SelectItem>
+                                                            <SelectItem value="11">11</SelectItem>
+                                                            <SelectItem value="13">13</SelectItem>
+                                                            <SelectItem value="15">15</SelectItem>
+                                                            <SelectItem value="17">17</SelectItem>
+                                                            <SelectItem value="18">18</SelectItem>
+                                                            <SelectItem value="19">19</SelectItem>
+                                                            <SelectItem value="20">20</SelectItem>
+                                                            <SelectItem value="23">23</SelectItem>
+                                                            <SelectItem value="25">25</SelectItem>
+                                                            <SelectItem value="27">27</SelectItem>
+                                                            <SelectItem value="41">41</SelectItem>
+                                                            <SelectItem value="44">44</SelectItem>
+                                                            <SelectItem value="47">47</SelectItem>
+                                                            <SelectItem value="50">50</SelectItem>
+                                                            <SelectItem value="52">52</SelectItem>
+                                                            <SelectItem value="54">54</SelectItem>
+                                                            <SelectItem value="63">63</SelectItem>
+                                                            <SelectItem value="66">66</SelectItem>
+                                                            <SelectItem value="68">68</SelectItem>
+                                                            <SelectItem value="70">70</SelectItem>
+                                                            <SelectItem value="73">73</SelectItem>
+                                                            <SelectItem value="76">76</SelectItem>
+                                                            <SelectItem value="81">81</SelectItem>
+                                                            <SelectItem value="85">85</SelectItem>
+                                                            <SelectItem value="86">86</SelectItem>
+                                                            <SelectItem value="88">88</SelectItem>
+                                                            <SelectItem value="91">91</SelectItem>
+                                                            <SelectItem value="94">94</SelectItem>
+                                                            <SelectItem value="95">95</SelectItem>
+                                                            <SelectItem value="97">97</SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
                                     name="department"
-                                    onChange={onInputChange}
-                                    className="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[#030711] dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-gray-800">
-                                    <option selected>Selecciona una opción</option>
-                                    <option value="apple">Cauca</option>
-                                    <option value="banana">Valle del Cauca</option>
-                                    <option value="blueberry">Pasaporte</option>
-                                    <option value="grapes">Documento de conducción</option>
-                                </select>
-                                {errors.department && <Label className="text-red-500">{errors.department}</Label>}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Departamento</FormLabel>
+                                            <FormControl>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Selecciona una opción" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectLabel>Opciones</SelectLabel>
+                                                            <SelectItem value="apple">Cauca</SelectItem>
+                                                            <SelectItem value="banana">Valle del Cauca</SelectItem>
+                                                            <SelectItem value="blueberry">Pasaporte</SelectItem>
+                                                            <SelectItem value="grapes">Documento de conducción</SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
-                        </div>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                            <div className="mt-2">
-                                <Label htmlFor="municipality_code">Código DANE Municipio</Label>
-                                <select
-                                    id="municipality_code"
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                <FormField
+                                    control={form.control}
                                     name="municipality_code"
-                                    onChange={onInputChange}
-                                    className="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[#030711] dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-gray-800">
-                                    <option selected>Selecciona una opción</option>
-                                    <option value="001">001</option>
-                                    <option value="002">002</option>
-                                    <option value="004">004</option>
-                                    <option value="021">021</option>
-                                </select>
-                                {errors.municipality_code && <Label className="text-red-500">{errors.municipality_code}</Label>}
-                            </div>
-                            <div className="mt-2">
-                                <Label htmlFor="cc">Municipio</Label>
-                                <select
-                                    id="municipality"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Código DANE Municipio</FormLabel>
+                                            <FormControl>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Selecciona una opción" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectLabel>Opciones</SelectLabel>
+                                                            <SelectItem value="001">001</SelectItem>
+                                                            <SelectItem value="002">002</SelectItem>
+                                                            <SelectItem value="004">004</SelectItem>
+                                                            <SelectItem value="021">021</SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
                                     name="municipality"
-                                    onChange={onInputChange}
-                                    className="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[#030711] dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-gray-800">
-                                    <option selected>Selecciona una opción</option>
-                                    <option value="apple">Cali</option>
-                                    <option value="banana">Buenaventura</option>
-                                    <option value="grapes">Bolivar</option>
-                                    <option value="blueberry">Dagua</option>
-                                </select>
-                                {errors.municipality && <Label className="text-red-500">{errors.municipality}</Label>}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Municipio</FormLabel>
+                                            <FormControl>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Selecciona una opción" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectLabel>Opciones</SelectLabel>
+                                                            <SelectItem value="cali">Cali</SelectItem>
+                                                            <SelectItem value="buenaventura">Buenaventura</SelectItem>
+                                                            <SelectItem value="bolivar">Bolivar</SelectItem>
+                                                            <SelectItem value="dagua">Dagua</SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
-                        </div>
-                        <InputComponent
-                            id="address"
-                            name="address"
-                            type="text"
-                            label="Dirección"
-                            value={formState.address}
-                            placeholder="Dirección"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.address)}`}
-                        />
-
-                        <InputComponent
-                            id="contrato"
-                            name="contrato"
-                            type="file"
-                            label="Copia del Contrato de Prestación de Servicios"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.contrato)}`}
-                        />
-                        <InputComponent
-                            id="copia_cc"
-                            name="copia_cc"
-                            type="file"
-                            label="Copia del documento de identidad del Usuario"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.copia_cc)}`}
-                        />
-                        <InputComponent
-                            id="copia_ds"
-                            name="copia_ds"
-                            type="file"
-                            label="Copia de la declaración del suscriptor"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.copia_ds)}`}
-                        />
-                        <InputComponent
-                            id="foto_fp"
-                            name="foto_fp"
-                            type="file"
-                            label="Foto de la fachada del predio del Usuario"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.foto_fp)}`}
-                        />
-                        <InputComponent
-                            id="velocidad_internet"
-                            name="velocidad_internet"
-                            type="file"
-                            label="Pantallazo de la prueba de velocidad del internet"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.velocidad_internet)}`}
-                        />
-                        <InputComponent
-                            id="cpe"
-                            name="cpe"
-                            type="file"
-                            label="Fotografía del número serial del equipo CPE instalado"
-                            onChange={onInputChange}
-                            errors={`${validateErrors(errors.cpe)}`}
-                        />
-                        <div className='mt-2'>
-                            <Label htmlFor="info_adicional">Información adicional</Label>
-                            <Textarea
-                                id="info_adicional"
-                                name="info_adicional"
-                                placeholder="Información adicional"
-                                onChange={onInputChange}
-                                className='border-gray-500 dark:border-gray-800'
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Dirección</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="text"
+                                                placeholder="Dirección"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
                             />
-                        </div>
-
-                        <div className='flex justify-end items-center mt-10'>
-                            <Button className='w-52' type="submit">Registrar usuario</Button>
-                        </div>
-                    </form>
+                            <FormField
+                                control={form.control}
+                                name="contrato"
+                                render={({ field: { value, ...fieldValues } }) => (
+                                    <FormItem>
+                                        <FormLabel>Copia del Contrato de Prestación de Servicios</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...fieldValues}
+                                                type="file"
+                                                accept='application/pdf'
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    fieldValues.onChange(file);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="copia_cc"
+                                render={({ field: { value, ...fieldValues } }) => (
+                                    <FormItem>
+                                        <FormLabel>Copia del documento de identidad del Usuario</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...fieldValues}
+                                                type="file"
+                                                accept='application/pdf'
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    fieldValues.onChange(file);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="copia_ds"
+                                render={({ field: { value, ...fieldValues } }) => (
+                                    <FormItem>
+                                        <FormLabel>Copia de la declaración del suscriptor</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...fieldValues}
+                                                type="file"
+                                                accept='application/pdf'
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    fieldValues.onChange(file);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="foto_fp"
+                                render={({ field: { value, ...fieldValues } }) => (
+                                    <FormItem>
+                                        <FormLabel>Foto de la fachada del predio del Usuario</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...fieldValues}
+                                                type="file"
+                                                accept='image/*'
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    fieldValues.onChange(file);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="velocidad_internet"
+                                render={({ field: { value, ...fieldValues } }) => (
+                                    <FormItem>
+                                        <FormLabel>Pantallazo de la prueba de velocidad del internet</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...fieldValues}
+                                                type="file"
+                                                accept='image/*'
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    fieldValues.onChange(file);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="cpe"
+                                render={({ field: { value, ...fieldValues } }) => (
+                                    <FormItem>
+                                        <FormLabel>Fotografía del número serial del equipo CPE instalado</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...fieldValues}
+                                                type="file"
+                                                accept='image/*'
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    fieldValues.onChange(file);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="info_adicional"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Información adicional</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                {...field}
+                                                placeholder="Información adicional"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className='flex justify-end items-center pt-10'>
+                                <Button className='w-52' type="submit">Registrar usuario</Button>
+                            </div>
+                        </form>
+                    </Form>
                 </CardContent>
             </Card>
         </DashboardLayout>

@@ -1,9 +1,7 @@
 
 import DashboardLayout from '../layouts/DashboardLayout'
 
-import Tooltip from '../components/TooltipComponent'
 import StatusComponent from '../components/StatusComponent'
-// import { Button } from '../../../components/ui/button'
 import {
     Table,
     TableBody,
@@ -19,6 +17,7 @@ import {
 import EditIcon from '../../../assets/icons/EditIcon'
 import DeleteIcon from '../../../assets/icons/DeleteIcon'
 import UpdateUser from '../components/UpdateUser'
+import DeleteUser from '../components/DeleteUser'
 
 const Beneficiario = () => {
     return (
@@ -48,28 +47,39 @@ const Beneficiario = () => {
                             <TableCell className="font-medium">Joe Doe</TableCell>
                             <TableCell>Beneficiario</TableCell>
                             <TableCell><StatusComponent status={true} /></TableCell>
-                            <TableCell className="text-right">
-                                <Tooltip text="Editar Beneficiario" icon={<EditIcon />} />
-                                <Tooltip text="Eliminar Beneficiario" icon={<DeleteIcon />} />
+                            <TableCell className="text-right space-x-2">
+                                <UpdateUser icon={<EditIcon />} />
+                                <DeleteUser
+                                    icon={<DeleteIcon />}
+                                    title='Eliminar Beneficiario'
+                                    description='¿Está seguro de eliminar a este Beneficiario?'
+                                />
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium">Joe Doe</TableCell>
                             <TableCell>Beneficiario</TableCell>
                             <TableCell><StatusComponent status={true} /></TableCell>
-                            <TableCell className="text-right">
-                                <Tooltip text="Editar Beneficiario" icon={<EditIcon />} />
-                                <Tooltip text="Eliminar Beneficiario" icon={<DeleteIcon />} />
+                            <TableCell className="text-right space-x-2">
+                                <UpdateUser icon={<EditIcon />} />
+                                <DeleteUser
+                                    icon={<DeleteIcon />}
+                                    title='Eliminar Beneficiario'
+                                    description='¿Está seguro de eliminar a este Beneficiario?'
+                                />
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium">Joe Doe</TableCell>
                             <TableCell>Beneficiario</TableCell>
                             <TableCell><StatusComponent status={false} /></TableCell>
-                            <TableCell className="text-right">
-                                <UpdateUser icon={<EditIcon />} text='Editar' />
-                                {/* <Tooltip text="Editar Beneficiario" icon={<EditIcon />} /> */}
-                                <Tooltip text="Eliminar Beneficiario" icon={<DeleteIcon />} />
+                            <TableCell className="text-right space-x-2">
+                                <UpdateUser icon={<EditIcon />} />
+                                <DeleteUser
+                                    icon={<DeleteIcon />}
+                                    title='Eliminar Beneficiario'
+                                    description='¿Está seguro de eliminar a este Beneficiario?'
+                                />
                             </TableCell>
                         </TableRow>
                     </TableBody>

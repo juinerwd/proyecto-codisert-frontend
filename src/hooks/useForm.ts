@@ -19,6 +19,7 @@ export const useForm = <T extends z.ZodObject<any>>(schema: T, initialValues: z.
         React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         const { name, value, files } = target;
+        
 
         if (
             target.name === 'contrato' || 
@@ -28,8 +29,14 @@ export const useForm = <T extends z.ZodObject<any>>(schema: T, initialValues: z.
             target.name === 'velocidad_internet' || 
             target.name === 'cpe'
         ) {
-            const file = files?.[0] || null;
+            const file = files?.[0] || undefined;
+            console.log(URL.createObjectURL(file));
+            
             setFormState((prev) => ({ ...prev, [name]: file}));
+            
+            // target.value = '';
+            console.log(target.value);
+            
         } else {
             setFormState((prev) => ({ ...prev, [name]: value }));
         }
