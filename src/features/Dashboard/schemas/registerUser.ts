@@ -18,6 +18,9 @@ export const beneficiarioSchema = z.object({
     municipality_code: z.string().min(1, "Debes seleccionar un código DANE"),
     municipality: z.string().min(1, "Debes seleccionar un municipio"),
     address: z.string().min(2, "Debes ingresar una dirección"),
+});
+
+export const beneficiaryDocumentSchema = z.object({
     contrato: z.object({
         file: z.custom<File | undefined>()
             .refine(
@@ -68,7 +71,7 @@ export const beneficiarioSchema = z.object({
                 (file) =>
                     !file || file.size < 1024 * 1024 * 5,
                 "El archivo debe ser menor a 5MB"
-            )            
+            )
     }),
     velocidad_internet: z.object({
         file: z.custom<File | undefined>()
@@ -97,7 +100,7 @@ export const beneficiarioSchema = z.object({
             )
     }),
     info_adicional: z.string().optional(),
-});
+})
 
 export const adminSchema = z.object({
     name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
@@ -112,3 +115,4 @@ export const adminSchema = z.object({
 
 export type AdminSchema = z.infer<typeof adminSchema>;
 export type BeneficiarioSchema = z.infer<typeof beneficiarioSchema>;
+export type BeneficiaryDocumentSchema = z.infer<typeof beneficiaryDocumentSchema>;

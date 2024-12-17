@@ -10,7 +10,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../..
 
 import { BeneficiarioSchema, beneficiarioSchema } from '../schemas/registerUser';
 import { Button } from "../../../components/ui/button"
-import { Textarea } from "../../../components/ui/textarea"
 import { Input } from "../../../components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../components/ui/form'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../../../components/ui/select'
@@ -40,14 +39,7 @@ const CreateUser = () => {
             department: "",
             municipality_code: "",
             municipality: "",
-            address: "",
-            contrato: undefined,
-            copia_cc: undefined,
-            copia_ds: undefined,
-            foto_fp: undefined,
-            velocidad_internet: undefined,
-            cpe: undefined,
-            info_adicional: "",
+            address: ""
         }
     });
 
@@ -406,148 +398,6 @@ const CreateUser = () => {
                                                 {...field}
                                                 type="text"
                                                 placeholder="Dirección"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="contrato"
-                                render={({ field: { value, ...fieldValues } }) => (
-                                    <FormItem>
-                                        <FormLabel>Copia del Contrato de Prestación de Servicios</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...fieldValues}
-                                                type="file"
-                                                accept='application/pdf'
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    fieldValues.onChange(file);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="copia_cc"
-                                render={({ field: { value, ...fieldValues } }) => (
-                                    <FormItem>
-                                        <FormLabel>Copia del documento de identidad del Usuario</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...fieldValues}
-                                                type="file"
-                                                accept='application/pdf'
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    fieldValues.onChange(file);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="copia_ds"
-                                render={({ field: { value, ...fieldValues } }) => (
-                                    <FormItem>
-                                        <FormLabel>Copia de la declaración del suscriptor</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...fieldValues}
-                                                type="file"
-                                                accept='application/pdf'
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    fieldValues.onChange(file);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="foto_fp"
-                                render={({ field: { value, ...fieldValues } }) => (
-                                    <FormItem>
-                                        <FormLabel>Foto de la fachada del predio del Usuario</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...fieldValues}
-                                                type="file"
-                                                accept='image/*'
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    fieldValues.onChange(file);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="velocidad_internet"
-                                render={({ field: { value, ...fieldValues } }) => (
-                                    <FormItem>
-                                        <FormLabel>Pantallazo de la prueba de velocidad del internet</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...fieldValues}
-                                                type="file"
-                                                accept='image/*'
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    fieldValues.onChange(file);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="cpe"
-                                render={({ field: { value, ...fieldValues } }) => (
-                                    <FormItem>
-                                        <FormLabel>Fotografía del número serial del equipo CPE instalado</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...fieldValues}
-                                                type="file"
-                                                accept='image/*'
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    fieldValues.onChange(file);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="info_adicional"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Información adicional</FormLabel>
-                                        <FormControl>
-                                            <Textarea
-                                                {...field}
-                                                placeholder="Información adicional"
                                             />
                                         </FormControl>
                                         <FormMessage />

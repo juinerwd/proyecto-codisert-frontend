@@ -36,7 +36,9 @@ const Beneficiario = () => {
                     <TableCaption>Lista de usuarios registrados</TableCaption>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[100px]">Nombre</TableHead>
+                            <TableHead className="w-[90px]">N° registro</TableHead>
+                            <TableHead className="w-[200px]">Nombre</TableHead>
+                            <TableHead>Número de Identificación</TableHead>
                             <TableHead>Posición</TableHead>
                             <TableHead>Estado</TableHead>
                             <TableHead className="text-right">Acción</TableHead>
@@ -44,7 +46,9 @@ const Beneficiario = () => {
                     </TableHeader>
                     <TableBody>
                         <TableRow>
+                            <TableCell className="font-medium">1</TableCell>
                             <TableCell className="font-medium">Joe Doe</TableCell>
+                            <TableCell>11119843502</TableCell>
                             <TableCell>Beneficiario</TableCell>
                             <TableCell><StatusComponent status={true} /></TableCell>
                             <TableCell className="text-right space-x-2">
@@ -57,7 +61,9 @@ const Beneficiario = () => {
                             </TableCell>
                         </TableRow>
                         <TableRow>
+                            <TableCell className="font-medium">2</TableCell>
                             <TableCell className="font-medium">Joe Doe</TableCell>
+                            <TableCell>11119843502</TableCell>
                             <TableCell>Beneficiario</TableCell>
                             <TableCell><StatusComponent status={true} /></TableCell>
                             <TableCell className="text-right space-x-2">
@@ -70,7 +76,9 @@ const Beneficiario = () => {
                             </TableCell>
                         </TableRow>
                         <TableRow>
+                            <TableCell className="font-medium">15489</TableCell>
                             <TableCell className="font-medium">Joe Doe</TableCell>
+                            <TableCell>11119843502</TableCell>
                             <TableCell>Beneficiario</TableCell>
                             <TableCell><StatusComponent status={false} /></TableCell>
                             <TableCell className="text-right space-x-2">

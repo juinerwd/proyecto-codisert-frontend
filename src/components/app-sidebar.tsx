@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import { useAuthStore } from "../store/authStore";
+
 // import { SearchForm } from "./search-form"
 import logo from "/images/logo-codisert-con-slogan-azul.png";
 import logoCodisertBlanco from "/images/logo-codisert-blanco-slogan.png";
@@ -23,14 +25,18 @@ import {
 import { NavUser } from "./nav-user"
 import { Link } from "react-router-dom"
 import { HomeIcon, Users } from "lucide-react"
+// import { last } from "lodash";
 
 
 // This is sample data.
 const data = {
   user: {
+    id: 1,
     name: "John Doe",
+    lastname: "Doe",
     email: "john@example.com",
     avatar: "/avatars/shadcn.jpg",
+    role: 'admin_super',
   },
   navLinks: [
     {
@@ -74,6 +80,8 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const userAdmin = useAuthStore(state => state.userAdmin)
+
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex justify-center h-24 shadow-gray-400 shadow-sm">
@@ -111,7 +119,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userAdmin || data.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

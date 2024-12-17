@@ -1,10 +1,10 @@
-// import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { useAuthStore } from '../../../store/authStore';
 
 import AuthLayout from '../layouts/AuthLayout'
-// import { startLoginWithEmailAndPassword } from '../../../store/thunks';
 
 import { Input } from "../../../components/ui/input"
 import { Button } from "../../../components/ui/button"
@@ -19,21 +19,23 @@ import { LoginSchema, loginSchema } from '../schemas/loginSchema';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../components/ui/form';
 
 const Login = () => {
-    // const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loginUser, loading, error } = useAuthStore();
 
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            email: "",
-            password: "",
+            NumeroDocumento: "",
+            Password: "",
         }
     });
 
-    const onSubmit = (data: LoginSchema) => {
-        console.log("Formulario enviado", data)
+    const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
+        // console.log("Formulario enviado", data)
 
-        // dispatch(startLoginWithEmailAndPassword(data))
-    }
+        await loginUser(data);
+        navigate('/dashboard', { replace: true });
+    }  
 
     return (
         <AuthLayout>
@@ -46,14 +48,14 @@ const Login = () => {
                         <CardContent className='space-y-5'>
                             <FormField
                                 control={form.control}
-                                name="email"
+                                name="NumeroDocumento"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='text-gray-900'>Correo electrónico</FormLabel>
+                                        <FormLabel className='text-gray-900'>Usuario</FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                type="email"
+                                                type="text"
                                                 className='text-gray-900'
                                                 placeholder="example@example.com"
                                             />
@@ -64,7 +66,7 @@ const Login = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="password"
+                                name="Password"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className='text-gray-900'>Contraseña</FormLabel>
@@ -84,8 +86,9 @@ const Login = () => {
                         <CardFooter className="flex justify-end">
                             {/* <Button variant="outline">Cancel</Button> */}
                             <Button type='submit' className='w-32 bg-gray-900 text-gray-100 hover:bg-gray-900'>
-                                <Link to="/dashboard">Ingresar</Link>
+                                {loading ? 'Cargando...' : 'Iniciar sesión'}
                             </Button>
+                            {error && <p className="text-red-500">{error}</p>}
                         </CardFooter>
                     </form>
                 </Form>
