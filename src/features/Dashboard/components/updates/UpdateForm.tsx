@@ -16,31 +16,48 @@ import {
     PopoverTrigger,
 } from "../../../../components/ui/popover"
 import { Calendar } from "../../../../components/ui/calendar"
+import { BeneficiaryData } from '../../types';
+import { useBeneficiaryStore } from '../../../../store/beneficiaryStore';
 
-const UpdateForm = () => {
+interface Props {
+    idUser: string | number;
+    beneficiaryData: BeneficiaryData;
+}
+
+const UpdateForm = ({ idUser, beneficiaryData }: Props) => {
+    const { updateBeneficiary } = useBeneficiaryStore();
 
     const form = useForm<BeneficiarioSchema>({
         resolver: zodResolver(beneficiarioSchema),
         defaultValues: {
-            name: "",
-            lastname: "",
-            identification_type: "",
-            identification_number: "",
-            telephone: "",
-            celular: "",
-            email: "",
-            stratum: "1",
-            start_operation: new Date(),
-            department_code: "",
-            department: "",
-            municipality_code: "",
-            municipality: "",
-            address: "",
+            Nombre: beneficiaryData.Nombre,
+            Apellido: beneficiaryData.Apellido,
+            TipoDocumento_idTipoDocumento: `${beneficiaryData.TipoDocumento}`,
+            NumeroDocumento: beneficiaryData.NumeroDocumento,
+            Telefono: beneficiaryData.Telefono,
+            Celular: beneficiaryData.Celular,
+            Correo: beneficiaryData.Correo,
+            FechaInicio: new Date(beneficiaryData.FechaInicio),
+            FechaFin: new Date(beneficiaryData.FechaFin),
+            CodigoDaneDpmto: beneficiaryData.CodigoDaneDpmto,
+            Departamento: beneficiaryData.Departamento,
+            CodigoDaneMunicipio: beneficiaryData.CodigoDaneMunicipio,
+            Municipio: beneficiaryData.Municipio,
+            Direccion: beneficiaryData.Direccion,
+            Barrio: beneficiaryData.Barrio,
+            Anexo: beneficiaryData.Anexo,
+            Estado_idEstado: `${beneficiaryData.Estado}`,
+            Estrato_idEstrato: `${beneficiaryData.Estrato}`,
+            Sexo_idSexo: `${beneficiaryData.Sexo}`,
+            Password: "T10F8DA0",
+
         }
     });
 
     const onSubmit = (data: BeneficiarioSchema) => {
         console.log("Formulario enviado", data)
+
+        updateBeneficiary(idUser, data);
     }
     return (
         <Form {...form}>
@@ -48,7 +65,7 @@ const UpdateForm = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                     <FormField
                         control={form.control}
-                        name="name"
+                        name="Nombre"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Nombre</FormLabel>
@@ -66,7 +83,7 @@ const UpdateForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="lastname"
+                        name="Apellido"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Apellidos</FormLabel>
@@ -86,7 +103,7 @@ const UpdateForm = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                     <FormField
                         control={form.control}
-                        name="identification_type"
+                        name="TipoDocumento_idTipoDocumento"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Tipo de identificación</FormLabel>
@@ -101,10 +118,9 @@ const UpdateForm = () => {
                                         <SelectContent className='border-gray-500 dark:border-gray-800'>
                                             <SelectGroup>
                                                 <SelectLabel>Selecciona una opción</SelectLabel>
-                                                <SelectItem value="CC">Cédula de Ciudadanía</SelectItem>
-                                                <SelectItem value="TI">Tarje de Indentidad</SelectItem>
-                                                <SelectItem value="CE">Cédula de Extranjería</SelectItem>
-                                                <SelectItem value="PA">Pasaporte</SelectItem>
+                                                <SelectItem value="1">Cédula de Ciudadanía</SelectItem>
+                                                <SelectItem value="2">Cédula de Extranjería</SelectItem>
+                                                <SelectItem value="3">Pasaporte</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
@@ -115,7 +131,7 @@ const UpdateForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="identification_number"
+                        name="NumeroDocumento"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Número de identificación</FormLabel>
@@ -135,7 +151,7 @@ const UpdateForm = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                     <FormField
                         control={form.control}
-                        name="telephone"
+                        name="Telefono"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Teléfono</FormLabel>
@@ -153,7 +169,7 @@ const UpdateForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="celular"
+                        name="Celular"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Celular</FormLabel>
@@ -172,7 +188,7 @@ const UpdateForm = () => {
                 </div>
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="Correo"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Correo electrónico</FormLabel>
@@ -191,7 +207,7 @@ const UpdateForm = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                     <FormField
                         control={form.control}
-                        name="stratum"
+                        name="Estrato_idEstrato"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Estrato</FormLabel>
@@ -209,7 +225,7 @@ const UpdateForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="start_operation"
+                        name="FechaInicio"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Fecha de inicio de operación</FormLabel>
@@ -251,7 +267,7 @@ const UpdateForm = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                     <FormField
                         control={form.control}
-                        name="department_code"
+                        name="CodigoDaneDpmto"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Código DANE Departamento</FormLabel>
@@ -305,7 +321,7 @@ const UpdateForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="department"
+                        name="Departamento"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Departamento</FormLabel>
@@ -333,7 +349,7 @@ const UpdateForm = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                     <FormField
                         control={form.control}
-                        name="municipality_code"
+                        name="CodigoDaneMunicipio"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Código DANE Municipio</FormLabel>
@@ -359,7 +375,7 @@ const UpdateForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="municipality"
+                        name="Municipio"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Municipio</FormLabel>
@@ -386,7 +402,7 @@ const UpdateForm = () => {
                 </div>
                 <FormField
                     control={form.control}
-                    name="address"
+                    name="Direccion"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Dirección</FormLabel>
@@ -402,6 +418,77 @@ const UpdateForm = () => {
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name="Barrio"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Barrio</FormLabel>
+                            <FormControl>
+                                <Input
+                                    {...field}
+                                    type="text"
+                                    placeholder="Barrio"
+                                    className='border-gray-500 dark:border-gray-800'
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <div>
+                    <FormField
+                        control={form.control}
+                        name="Sexo_idSexo"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Genero</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className='border-gray-500 dark:border-gray-800'>
+                                            <SelectValue placeholder="Selecciona una opción" />
+                                        </SelectTrigger>
+                                        <SelectContent className='border-gray-500 dark:border-gray-800'>
+                                            <SelectGroup>
+                                                <SelectLabel>Opciones</SelectLabel>
+                                                <SelectItem value="1">Masculina</SelectItem>
+                                                <SelectItem value="2">Femenifo</SelectItem>
+                                                <SelectItem value="3">Otros</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="Estado_idEstado"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Estado</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className='border-gray-500 dark:border-gray-800'>
+                                            <SelectValue placeholder="Selecciona una opción" />
+                                        </SelectTrigger>
+                                        <SelectContent className='border-gray-500 dark:border-gray-800'>
+                                            <SelectGroup>
+                                                <SelectLabel>Opciones</SelectLabel>
+                                                <SelectItem value="1">Activo</SelectItem>
+                                                <SelectItem value="2">Inactivo</SelectItem>
+                                                <SelectItem value="3">Operativo</SelectItem>
+                                                <SelectItem value="4">Suspendido</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
                 <div className='flex justify-end items-center'>
                     <Button type="submit">Actualizar usuario</Button>
                 </div>

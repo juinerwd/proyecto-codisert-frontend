@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist, PersistOptions } from 'zustand/middleware'
-import { UserAdmin } from '../types/user'
+import { UserAdmin } from '../features/Dashboard/types';
 import { post } from '../services/api';
 import { LoginSchema } from '@/features/Auth/schemas/loginSchema';
 
@@ -27,11 +27,17 @@ export const useAuthStore = create<AuthState>()(
                     set({ userAdmin: resp.user, isAuthenticated: true, loading: false });
 
                 } catch (err: any) {
-                    set({ error: err.message, loading: false });
+                    console.log("Error al iniciar sesión", err);
+                    
+                    set({ isAuthenticated: false, loading: false, error: "Error al iniciar sesión. Por favor, inténtalo de nuevo. \nSi el problema persiste, contacte al administrador" });
                 }
             },
-            logout: () => {
-                set({ userAdmin: null, isAuthenticated: false });
+            logout: async () => {
+                await post('auth/logout', {});
+                localStorage.removeItem('user-storage');
+                localStorage.removeItem('admin-storage');
+                localStorage.removeItem('beneficiary-storage');
+                window.location.href = "/";
             },
         }),
         {

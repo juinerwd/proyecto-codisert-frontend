@@ -11,16 +11,23 @@ import {
     AlertDialogTrigger,
 } from "../../../components/ui/alert-dialog"
 import { Button } from "../../../components/ui/button"
+import { useAdminStore } from "../../../store/adminStore";
 
 interface Props {
-    // text?: string
+    idUser: number | string;
     icon?: React.ReactNode
     title: string
     description: string
     // children?: React.ReactNode
 }
 
-const DeleteUser = ({ icon, title, description }: Props) => {
+const DeleteUser = ({  idUser, icon, title, description }: Props) => {
+    const { deleteAdmin } = useAdminStore();
+
+    const handleDeleteAdmin = (id: number | string) => {
+        deleteAdmin(id);
+    }
+    
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -37,7 +44,9 @@ const DeleteUser = ({ icon, title, description }: Props) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction>Continuar</AlertDialogAction>
+                    <AlertDialogAction
+                        onClick={() => handleDeleteAdmin(idUser)}
+                    >Continuar</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

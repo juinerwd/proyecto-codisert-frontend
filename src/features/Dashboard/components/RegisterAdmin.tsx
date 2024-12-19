@@ -1,6 +1,8 @@
-import React from 'react'
 
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+import { useAdminStore } from '../../../store/adminStore';
 
 import { Button } from "../../../components/ui/button"
 import {
@@ -23,36 +25,38 @@ import {
 } from "../../../components/ui/select"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../components/ui/form'
 import { adminSchema, AdminSchema } from '../schemas/registerUser'
-import { zodResolver } from '@hookform/resolvers/zod'
 
-interface Props {
-    text: string
-    // icon: React.ReactNode
-    // children?: React.ReactNode
-}
 
-const RegisterAdmin = ({ text }: Props) => {
+const RegisterAdmin = () => {
+    const { createAdmin, loading, error } = useAdminStore();
+
     const form = useForm<AdminSchema>({
         resolver: zodResolver(adminSchema),
         defaultValues: {
-            name: "",
-            lastname: "",
-            identification_type: "",
-            identification_number: "",
-            telephone: "",
-            email: "",
-            role: "",
+            Nombre: "",
+            Apellido: "",
+            TipoDocumento_idTipoDocumento: "",
+            NumeroDocumento: "",
+            Correo: "",
+            Telefono: "",
+            Password: "T10F8DA0",
+            Estado_idEstado: "1",
+            Rol_idRol: "2",
+            Sexo_idSexo: "1",
         }
 
     });
 
-    const onSubmit = (data: AdminSchema) => {
-        console.log("Formulario enviado", data)
+    const onSubmitRegister: SubmitHandler<AdminSchema> = async (data) => {
+        // sconsole.log("Formulario enviado", data)
+        await createAdmin(data);
+
     }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">{text}</Button>
+                <Button variant="outline">Registrar admin</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[720px] h-[90vh]">
                 <DialogHeader>
@@ -62,11 +66,11 @@ const RegisterAdmin = ({ text }: Props) => {
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='overflow-y-auto space-y-5'>
+                    <form onSubmit={form.handleSubmit(onSubmitRegister)} className='overflow-y-auto space-y-5'>
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                             <FormField
                                 control={form.control}
-                                name="name"
+                                name="Nombre"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Nombre</FormLabel>
@@ -84,7 +88,7 @@ const RegisterAdmin = ({ text }: Props) => {
                             />
                             <FormField
                                 control={form.control}
-                                name="lastname"
+                                name="Apellido"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Apellidos</FormLabel>
@@ -104,7 +108,7 @@ const RegisterAdmin = ({ text }: Props) => {
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                             <FormField
                                 control={form.control}
-                                name="identification_type"
+                                name="TipoDocumento_idTipoDocumento"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Tipo de identificación</FormLabel>
@@ -119,10 +123,9 @@ const RegisterAdmin = ({ text }: Props) => {
                                                 <SelectContent className='border-gray-500 dark:border-gray-800'>
                                                     <SelectGroup>
                                                         <SelectLabel>Selecciona una opción</SelectLabel>
-                                                        <SelectItem value="CC">Cédula de Ciudadanía</SelectItem>
-                                                        <SelectItem value="TI">Tarje de Indentidad</SelectItem>
-                                                        <SelectItem value="CE">Cédula de Extranjería</SelectItem>
-                                                        <SelectItem value="PA">Pasaporte</SelectItem>
+                                                        <SelectItem value="1">Cédula de Ciudadanía</SelectItem>
+                                                        <SelectItem value="2">Cédula de Extranjería</SelectItem>
+                                                        <SelectItem value="3">Pasaporte</SelectItem>
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -133,7 +136,7 @@ const RegisterAdmin = ({ text }: Props) => {
                             />
                             <FormField
                                 control={form.control}
-                                name="identification_number"
+                                name="NumeroDocumento"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Número de identificación</FormLabel>
@@ -152,7 +155,7 @@ const RegisterAdmin = ({ text }: Props) => {
                         </div>
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="Correo"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Correo electrónico</FormLabel>
@@ -169,9 +172,10 @@ const RegisterAdmin = ({ text }: Props) => {
                             )}
                         />
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+
                             <FormField
                                 control={form.control}
-                                name="telephone"
+                                name="Telefono"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Teléfono</FormLabel>
@@ -189,7 +193,67 @@ const RegisterAdmin = ({ text }: Props) => {
                             />
                             <FormField
                                 control={form.control}
-                                name="role"
+                                name="Sexo_idSexo"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Genero</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <SelectTrigger className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectValue placeholder="Selecciona una opción" />
+                                                </SelectTrigger>
+                                                <SelectContent className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectGroup>
+                                                        <SelectLabel>Selecciona una opción</SelectLabel>
+                                                        <SelectItem value="1">Masculino</SelectItem>
+                                                        <SelectItem value="2">Femenino</SelectItem>
+                                                        <SelectItem value="3">Otro</SelectItem>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                            <FormField
+                                control={form.control}
+                                name="Estado_idEstado"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Estado</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <SelectTrigger className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectValue placeholder="Selecciona una opción" />
+                                                </SelectTrigger>
+                                                <SelectContent className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectGroup>
+                                                        <SelectLabel>Selecciona una opción</SelectLabel>
+                                                        <SelectItem value="1">Activo</SelectItem>
+                                                        <SelectItem value="2">Inactivo</SelectItem>
+                                                        <SelectItem value="3">Operativo</SelectItem>
+                                                        <SelectItem value="4">Suspendido</SelectItem>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="Rol_idRol"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Rol</FormLabel>
@@ -204,9 +268,9 @@ const RegisterAdmin = ({ text }: Props) => {
                                                 <SelectContent className='border-gray-500 dark:border-gray-800'>
                                                     <SelectGroup>
                                                         <SelectLabel>Selecciona una opción</SelectLabel>
-                                                        <SelectItem value="admin">Administrador</SelectItem>
-                                                        <SelectItem value="AL">Administrador Lector</SelectItem>
-                                                        <SelectItem value="AR">Administrador Registrador</SelectItem>
+                                                        <SelectItem value="1">Super Administrador</SelectItem>
+                                                        <SelectItem value="2">Administrador Registrador</SelectItem>
+                                                        <SelectItem value="3">Administrador Lector</SelectItem>
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -217,8 +281,13 @@ const RegisterAdmin = ({ text }: Props) => {
                             />
                         </div>
                         <div className='flex justify-end items-center'>
-                            <Button type="submit">Actualizar usuario</Button>
+                            <Button type='submit'>
+                                {loading ? 'Guardando...' : 'Crear administrador'}
+                            </Button>
                         </div>
+                        {error && <div className='flex justify-center items-center'>
+                            <p className="text-red-500">{error}</p>
+                        </div>}
                     </form>
                 </Form>
             </DialogContent>

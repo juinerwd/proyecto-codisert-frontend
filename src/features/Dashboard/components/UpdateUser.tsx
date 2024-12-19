@@ -21,14 +21,17 @@ import {
 } from "../../../components/ui/card"
 import UpdateForm from "./updates/UpdateForm";
 import UserDocuments from "./updates/UserDocuments";
+import { BeneficiaryData } from "../types";
 
 interface Props {
+    idUser: string | number;
+    beneficiaryData: BeneficiaryData;
     // text: string
     icon?: React.ReactNode
     // children?: React.ReactNode
 }
 
-const UpdateUser = ({ icon }: Props) => {
+const UpdateUser = ({ idUser, beneficiaryData, icon }: Props) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -51,7 +54,7 @@ const UpdateUser = ({ icon }: Props) => {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <UpdateForm />
+                                <UpdateForm idUser={idUser} beneficiaryData={beneficiaryData} />
                             </CardContent>
                         </Card>
                     </TabsContent>

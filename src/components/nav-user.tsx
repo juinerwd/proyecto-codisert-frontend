@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuthStore } from "../store/authStore"
-import { UserAdmin } from "../types/user"
+import { UserAdmin } from "../features/Dashboard/types"
 import {
   BadgeCheck,
   Bell,

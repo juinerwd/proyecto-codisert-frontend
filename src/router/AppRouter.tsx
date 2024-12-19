@@ -8,8 +8,8 @@ import PublicRoute from "./PublicRoute"
 
 
 export const AppRouter = () => {
-    const isAuthenticated = useAuthStore(state => state.isAuthenticated)    
-    
+    const isAuthenticated = useAuthStore( state => state.isAuthenticated )
+
     return (
 
         <Routes>

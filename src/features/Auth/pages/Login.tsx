@@ -83,12 +83,15 @@ const Login = () => {
                                 )}
                             />
                         </CardContent>
-                        <CardFooter className="flex justify-end">
-                            {/* <Button variant="outline">Cancel</Button> */}
-                            <Button type='submit' className='w-32 bg-gray-900 text-gray-100 hover:bg-gray-900'>
-                                {loading ? 'Cargando...' : 'Iniciar sesión'}
-                            </Button>
-                            {error && <p className="text-red-500">{error}</p>}
+                        <CardFooter className="flex flex-col justify-end">
+                            <div className='flex justify-end w-full'>
+                                <Button type='submit' className='w-52 bg-gray-900 text-gray-100 hover:bg-gray-900 rounded-lg'>
+                                    {loading ? 'Cargando...' : 'Iniciar sesión'}
+                                </Button>
+                            </div>
+                            {error && <div className='flex justify-center items-center w-full mt-10'>
+                                <p className="text-red-500">{error}</p>
+                            </div>}
                         </CardFooter>
                     </form>
                 </Form>

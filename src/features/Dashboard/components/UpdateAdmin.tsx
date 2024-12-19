@@ -31,30 +31,40 @@ import {
     SelectTrigger,
     SelectContent
 } from '../../../components/ui/select'
+import { useAdminStore } from '../../../store/adminStore';
+import { AdminData } from '../types';
 
 interface Props {
-    // text: string
-    icon?: React.ReactNode
+    idAdmin: string | number;
+    dataAdmin: AdminData;
+    icon?: React.ReactNode;
     // children?: React.ReactNode
 }
 
-const UpdateAdmin = ({ icon }: Props) => {
+const UpdateAdmin = ({ idAdmin, dataAdmin, icon }: Props) => {
+    const { updateAdmin } = useAdminStore();
+
     const form = useForm<AdminSchema>({
         resolver: zodResolver(adminSchema),
         defaultValues: {
-            name: "",
-            lastname: "",
-            identification_type: "",
-            identification_number: "",
-            telephone: "",
-            email: "",
-            role: "",
+            Nombre: dataAdmin.Nombre,
+            Apellido: dataAdmin.Apellido,
+            TipoDocumento_idTipoDocumento: `${dataAdmin.TipoDocumento_idTipoDocumento}`,
+            NumeroDocumento: dataAdmin.NumeroDocumento,
+            Correo: dataAdmin.Correo,
+            Telefono: dataAdmin.Telefono,
+            Password: "T10F8DA0",
+            Estado_idEstado: `${dataAdmin.Estado_idEstado}`,
+            Rol_idRol: `${dataAdmin.Rol_idRol}`,
+            Sexo_idSexo: `${dataAdmin.Sexo_idSexo}`,
         }
 
     });
 
     const onSubmit = (data: AdminSchema) => {
         console.log("Formulario enviado", data)
+
+        updateAdmin(idAdmin, data);
     }
     return (
         <Dialog>
@@ -75,7 +85,7 @@ const UpdateAdmin = ({ icon }: Props) => {
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                             <FormField
                                 control={form.control}
-                                name="name"
+                                name="Nombre"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Nombre</FormLabel>
@@ -93,7 +103,7 @@ const UpdateAdmin = ({ icon }: Props) => {
                             />
                             <FormField
                                 control={form.control}
-                                name="lastname"
+                                name="Apellido"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Apellidos</FormLabel>
@@ -108,12 +118,12 @@ const UpdateAdmin = ({ icon }: Props) => {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            /> 
+                            />
                         </div>
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                             <FormField
                                 control={form.control}
-                                name="identification_type"
+                                name="TipoDocumento_idTipoDocumento"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Tipo de identificación</FormLabel>
@@ -128,10 +138,9 @@ const UpdateAdmin = ({ icon }: Props) => {
                                                 <SelectContent className='border-gray-500 dark:border-gray-800'>
                                                     <SelectGroup>
                                                         <SelectLabel>Selecciona una opción</SelectLabel>
-                                                        <SelectItem value="CC">Cédula de Ciudadanía</SelectItem>
-                                                        <SelectItem value="TI">Tarje de Indentidad</SelectItem>
-                                                        <SelectItem value="CE">Cédula de Extranjería</SelectItem>
-                                                        <SelectItem value="PA">Pasaporte</SelectItem>
+                                                        <SelectItem value="1">Cédula de Ciudadanía</SelectItem>
+                                                        <SelectItem value="2">Cédula de Extranjería</SelectItem>
+                                                        <SelectItem value="3">Pasaporte</SelectItem>
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -142,7 +151,7 @@ const UpdateAdmin = ({ icon }: Props) => {
                             />
                             <FormField
                                 control={form.control}
-                                name="identification_number"
+                                name="NumeroDocumento"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Número de identificación</FormLabel>
@@ -161,7 +170,7 @@ const UpdateAdmin = ({ icon }: Props) => {
                         </div>
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="Correo"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Correo electrónico</FormLabel>
@@ -180,7 +189,7 @@ const UpdateAdmin = ({ icon }: Props) => {
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                             <FormField
                                 control={form.control}
-                                name="telephone"
+                                name="Telefono"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Teléfono</FormLabel>
@@ -198,7 +207,66 @@ const UpdateAdmin = ({ icon }: Props) => {
                             />
                             <FormField
                                 control={form.control}
-                                name="role"
+                                name="Sexo_idSexo"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Genero</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <SelectTrigger className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectValue placeholder="Selecciona una opción" />
+                                                </SelectTrigger>
+                                                <SelectContent className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectGroup>
+                                                        <SelectLabel>Selecciona una opción</SelectLabel>
+                                                        <SelectItem value="1">Masculino</SelectItem>
+                                                        <SelectItem value="2">Femenino</SelectItem>
+                                                        <SelectItem value="3">Otro</SelectItem>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                            <FormField
+                                control={form.control}
+                                name="Estado_idEstado"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Estado</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <SelectTrigger className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectValue placeholder="Selecciona una opción" />
+                                                </SelectTrigger>
+                                                <SelectContent className='border-gray-500 dark:border-gray-800'>
+                                                    <SelectGroup>
+                                                        <SelectLabel>Selecciona una opción</SelectLabel>
+                                                        <SelectItem value="1">Activo</SelectItem>
+                                                        <SelectItem value="2">Inactivo</SelectItem>
+                                                        <SelectItem value="3">Operativo</SelectItem>
+                                                        <SelectItem value="4">Suspendido</SelectItem>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="Rol_idRol"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Rol</FormLabel>
@@ -213,9 +281,9 @@ const UpdateAdmin = ({ icon }: Props) => {
                                                 <SelectContent className='border-gray-500 dark:border-gray-800'>
                                                     <SelectGroup>
                                                         <SelectLabel>Selecciona una opción</SelectLabel>
-                                                        <SelectItem value="admin">Administrador</SelectItem>
-                                                        <SelectItem value="AL">Administrador Lector</SelectItem>
-                                                        <SelectItem value="AR">Administrador Registrador</SelectItem>
+                                                        <SelectItem value="1">Super Administrador</SelectItem>
+                                                        <SelectItem value="2">Administrador Registrador</SelectItem>
+                                                        <SelectItem value="3">Administrador Lector</SelectItem>
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
