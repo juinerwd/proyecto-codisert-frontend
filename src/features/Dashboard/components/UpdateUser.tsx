@@ -2,6 +2,8 @@
 import {
     Dialog,
     DialogContent,
+    DialogHeader,
+    DialogTitle,
     DialogTrigger,
 } from "../../../components/ui/dialog"
 import { Button } from "../../../components/ui/button"
@@ -39,14 +41,17 @@ const UpdateUser = ({ idUser, beneficiaryData, icon }: Props) => {
                     <Tooltip text="Editar Beneficiario" icon={icon} />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[820px] h-[95vh]">
+            <DialogContent className="sm:max-w-[820px] h-[95vh] overflow-y-auto">
+                <DialogHeader>
+                    <DialogTitle className="text-2xl">Actualizar Información del Beneficiario</DialogTitle>
+                </DialogHeader>
                 <Tabs defaultValue="data-user" className="w-full">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="data-user">Datos del usuario</TabsTrigger>
                         <TabsTrigger value="document-user">Documentos</TabsTrigger>
                     </TabsList>
                     <TabsContent value="data-user" className="">
-                        <Card className="h-[80vh] overflow-y-auto">
+                        <Card>
                             <CardHeader>
                                 <CardTitle>Actualizar usuario</CardTitle>
                                 <CardDescription>
@@ -59,7 +64,7 @@ const UpdateUser = ({ idUser, beneficiaryData, icon }: Props) => {
                         </Card>
                     </TabsContent>
                     <TabsContent value="document-user">
-                        <Card className="h-[80vh] overflow-y-auto">
+                        <Card className="">
                             <CardHeader>
                                 <CardTitle>Documentos del usuario</CardTitle>
                                 <CardDescription>

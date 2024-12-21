@@ -32,8 +32,9 @@ const UpdateForm = ({ idUser, beneficiaryData }: Props) => {
         defaultValues: {
             Nombre: beneficiaryData.Nombre,
             Apellido: beneficiaryData.Apellido,
-            TipoDocumento_idTipoDocumento: `${beneficiaryData.TipoDocumento}`,
+            TipoDocumento_idTipoDocumento: `${beneficiaryData.TipoDocumento.id}`,
             NumeroDocumento: beneficiaryData.NumeroDocumento,
+            FechaNacimiento: new Date(beneficiaryData.FechaNacimiento),
             Telefono: beneficiaryData.Telefono,
             Celular: beneficiaryData.Celular,
             Correo: beneficiaryData.Correo,
@@ -46,13 +47,14 @@ const UpdateForm = ({ idUser, beneficiaryData }: Props) => {
             Direccion: beneficiaryData.Direccion,
             Barrio: beneficiaryData.Barrio,
             Anexo: beneficiaryData.Anexo,
-            Estado_idEstado: `${beneficiaryData.Estado}`,
-            Estrato_idEstrato: `${beneficiaryData.Estrato}`,
-            Sexo_idSexo: `${beneficiaryData.Sexo}`,
-            Password: "T10F8DA0",
-
+            Estado_idEstado: `${beneficiaryData.Estado.id}`,
+            Estrato_idEstrato: `${beneficiaryData.Estrato.id}`,
+            Sexo_idSexo: `${beneficiaryData.Sexo.id}`
         }
     });
+
+    // console.log("Datos enviados", beneficiaryData)
+    
 
     const onSubmit = (data: BeneficiarioSchema) => {
         console.log("Formulario enviado", data)
@@ -279,8 +281,8 @@ const UpdateForm = ({ idUser, beneficiaryData }: Props) => {
                                         <SelectContent className='border-gray-500 dark:border-gray-800'>
                                             <SelectGroup>
                                                 <SelectLabel>Opciones</SelectLabel>
-                                                <SelectItem value="05">05</SelectItem>
-                                                <SelectItem value="08">08</SelectItem>
+                                                <SelectItem value="5">5</SelectItem>
+                                                <SelectItem value="8">8</SelectItem>
                                                 <SelectItem value="11">11</SelectItem>
                                                 <SelectItem value="13">13</SelectItem>
                                                 <SelectItem value="15">15</SelectItem>

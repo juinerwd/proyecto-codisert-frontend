@@ -43,12 +43,18 @@ export interface BeneficiaryData {
     idBeneficiario: number;
     Nombre: string;
     Apellido: string;
-    TipoDocumento: string;
+    TipoDocumento: {
+        id: number|string;
+        nombre: string;
+    };
     NumeroDocumento: string;
     Telefono: string;
     Celular: string;
     Correo: string;
-    Estrato: string;
+    Estrato: {
+        id: number|string;
+        nombre: string;
+    };
     FechaNacimiento: string | Date;
     FechaInicio: string | Date;
     FechaFin: string | Date;
@@ -59,11 +65,35 @@ export interface BeneficiaryData {
     Direccion: string;
     Barrio: string;
     Anexo: string;
-    Estado: string;
-    Sexo: string;
+    Estado: {
+        id: number|string;
+        nombre: string;
+    };
+    Sexo: {
+        id: number|string;
+        nombre: string;
+    };
     Administrador: {
         idAdministrador: number;
         Nombre: string;
         Apellido: string;
     };
+}
+
+
+export interface BeneficiaryDocument {
+    idDocumentos: number;
+    NombreDocumento: string;
+    TipoDocumento: string;
+    Url: string;
+    Beneficiario: {
+        idBeneficiario: number;
+        Nombre: string;
+        Apellido: string;
+    }
+    Administrador?: {
+        idAdministrador: number;
+        Nombre: string;
+        Apellido: string;
+    }
 }

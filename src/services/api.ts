@@ -1,9 +1,9 @@
-import { useAuthStore } from "../store/authStore";
+// import { useAuthStore } from "../store/authStore";
 
 const API_URL = import.meta.env.VITE_API_URL
 
 export const getData = async (url:string) => {
-    const { logout } = useAuthStore.getState();
+    // const { logout } = useAuthStore.getState();
     try {
         const response = await fetch(`${API_URL}/${url}`, {
             method: 'GET',
@@ -13,18 +13,16 @@ export const getData = async (url:string) => {
             credentials: 'include', // Importante para enviar y recibir cookies
         });
 
-        if (response.status === 401) {
-            const resp = await response.json();
-            logout();
-            throw new Error(resp.message);
-        }
+        // if (response.status === 401) {
+        //     logout();
+        //     return;
+        // }
+        const data = await response.json()
         
         if (!response.ok) {
-            const resp = await response.json();
-            throw new Error(resp.message);
+            throw new Error(data.message);
         }
 
-        const data = await response.json()
         return data
     } catch (error) {
         console.error('Error en la petición');

@@ -30,6 +30,7 @@ import {
   useSidebar,
 } from "./ui/sidebar"
 import { Button } from "./ui/button"
+import { Link } from "react-router-dom"
 
 interface Props {
   user: UserAdmin | {
@@ -88,7 +89,9 @@ export function NavUser({user}: Props) {
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
-                Cuenta
+                <Link to="/dashboard/account" className="w-full flex justify-start border-none px-0">
+                  Cuenta
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
