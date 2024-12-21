@@ -145,6 +145,10 @@ export const uploadDocumentsSchema = z.object({
                 .string()
                 .trim()
                 .min(1, 'El nombre del archivo es obligatorio'),
+            TipoDocumento: z
+                .string()
+                .trim()
+                .min(1, 'El nombre del archivo es obligatorio'),
         })
     )
 })

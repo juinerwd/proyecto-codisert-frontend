@@ -1,4 +1,4 @@
-import Tooltip from "./TooltipComponent"
+// import Tooltip from "./TooltipComponent"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -32,7 +32,7 @@ const DeleteUser = ({  idUser, icon, title, description }: Props) => {
         <AlertDialog>
             <AlertDialogTrigger asChild>
                 <Button variant="outline" className="p-0 size-7 w-7 h-7">
-                    <Tooltip text="Eliminar Beneficiario" icon={icon} />
+                    {icon}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

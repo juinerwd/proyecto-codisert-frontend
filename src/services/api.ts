@@ -1,9 +1,9 @@
-// import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../store/authStore";
 
 const API_URL = import.meta.env.VITE_API_URL
 
 export const getData = async (url:string) => {
-    // const { logout } = useAuthStore.getState();
+    const { logout } = useAuthStore.getState();
     try {
         const response = await fetch(`${API_URL}/${url}`, {
             method: 'GET',
@@ -13,13 +13,14 @@ export const getData = async (url:string) => {
             credentials: 'include', // Importante para enviar y recibir cookies
         });
 
-        // if (response.status === 401) {
-        //     logout();
-        //     return;
-        // }
+        if (response.status === 401) {
+            logout();
+            return;
+        }
+        
         const data = await response.json()
         
-        if (!response.ok) {
+        if (!response.ok && response.status !== 401) {
             throw new Error(data.message);
         }
 
@@ -69,6 +70,36 @@ export const post = async (url:string, data:object) => {
         }
 
         if (!response.ok) {     
+            throw new Error(`No se pudo realizar el registro, ${responseData.message}`);
+        }
+        
+        return responseData 
+    }catch (error) {
+        console.error('Ha ocurrido un error, por favor, contacta con el administrador');
+        throw error;
+    }
+}
+
+export const uploadFiles = async (url:string, data:FormData) => {
+    try {        
+        console.log("Datos enviados", data)
+        
+        const response = await fetch(`${API_URL}/${url}`, {
+            method: 'POST',
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+            },
+            credentials: 'include', // Importante para enviar y recibir cookies
+            body: data,
+        });
+
+        const responseData = await response.json()
+
+        if (response.status === 400) {
+            throw new Error(`${responseData.message}`);
+        }
+
+        if (!response.ok && response.status !== 400) {     
             throw new Error(`No se pudo realizar el registro, ${responseData.message}`);
         }
         

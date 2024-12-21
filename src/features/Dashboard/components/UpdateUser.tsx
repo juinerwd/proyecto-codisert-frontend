@@ -7,7 +7,7 @@ import {
     DialogTrigger,
 } from "../../../components/ui/dialog"
 import { Button } from "../../../components/ui/button"
-import Tooltip from './TooltipComponent';
+// import Tooltip from './TooltipComponent';
 import {
     Tabs,
     TabsContent,
@@ -38,7 +38,7 @@ const UpdateUser = ({ idUser, beneficiaryData, icon }: Props) => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="outline" className='p-0 size-7 w-7 h-7'>
-                    <Tooltip text="Editar Beneficiario" icon={icon} />
+                    {icon}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[820px] h-[95vh] overflow-y-auto">
@@ -72,7 +72,7 @@ const UpdateUser = ({ idUser, beneficiaryData, icon }: Props) => {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
-                                <UserDocuments />
+                                <UserDocuments idUser={idUser} />
                             </CardContent>
                         </Card>
                     </TabsContent>
